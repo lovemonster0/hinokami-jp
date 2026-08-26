@@ -1,0 +1,923 @@
+html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>炭火焼 ヒノカミ｜ご案内</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      background: #eee3d3;
+      color: #2b2926;
+      line-height: 2;
+      letter-spacing: 0.06em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ------------------------------
+       ハンバーガーメニュー
+    ------------------------------ */
+
+    .menu-button {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 1001;
+      width: 52px;
+      height: 52px;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: rgba(20,20,20,0.2);
+      backdrop-filter: blur(7px);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .menu-button span {
+      width: 24px;
+      height: 1px;
+      background: white;
+      transition: 0.3s;
+    }
+
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(82vw, 390px);
+      height: 100vh;
+      z-index: 1000;
+
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(12px);
+
+      padding: 120px 48px 40px;
+      transition: right 0.45s ease;
+    }
+
+    .menu-panel.open {
+      right: 0;
+    }
+
+    .menu-panel nav {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .menu-panel a {
+      color: #171717;
+      font-size: 17px;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
+      padding-bottom: 13px;
+    }
+
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      z-index: 999;
+    }
+
+    .menu-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ------------------------------
+       TOP
+    ------------------------------ */
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      color: white;
+      background: #25211c;
+    }
+
+    /*
+      後から写真を入れる場所。
+      今は仮のグラデーション背景。
+    */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(rgba(15,12,8,0.35), rgba(15,12,8,0.55)),
+        radial-gradient(circle at 50% 30%, #6e5b45, #17130f 75%);
+
+      transform: scale(1.05);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 30px;
+    }
+
+    .hero-small {
+      font-size: 17px;
+      margin-bottom: 16px;
+      letter-spacing: 0.3em;
+    }
+
+    .hero-title {
+      font-size: clamp(34px, 8vw, 72px);
+      font-weight: normal;
+      letter-spacing: 0.13em;
+    }
+
+    .hero-subtitle {
+      margin-top: 12px;
+      font-size: 12px;
+      letter-spacing: 0.4em;
+      opacity: 0.85;
+    }
+
+    .scroll-guide {
+      position: absolute;
+      z-index: 2;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      opacity: 0.85;
+    }
+
+    .scroll-guide::after {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 50px;
+      background: white;
+      margin: 13px auto 0;
+      opacity: 0.6;
+    }
+
+    /* ------------------------------
+       共通セクション
+    ------------------------------ */
+
+    section {
+      padding: 110px 22px;
+    }
+
+    .inner {
+      width: min(100%, 900px);
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(27px, 5vw, 42px);
+      font-weight: normal;
+      letter-spacing: 0.16em;
+      margin-bottom: 14px;
+    }
+
+    .section-en {
+      display: block;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      margin-bottom: 70px;
+      opacity: 0.55;
+    }
+
+    .guide-item {
+      padding: 38px 0;
+      border-bottom: 1px solid rgba(38,34,28,0.18);
+    }
+
+    .guide-item:first-of-type {
+      border-top: 1px solid rgba(38,34,28,0.18);
+    }
+
+    .guide-item h3 {
+      font-size: 19px;
+      font-weight: normal;
+      margin-bottom: 17px;
+      letter-spacing: 0.12em;
+    }
+
+    .guide-item p {
+      font-size: 14px;
+      line-height: 2.2;
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 12px !important;
+      opacity: 0.7;
+    }
+
+    /* ------------------------------
+       SERVICE
+    ------------------------------ */
+
+    .services {
+      background: #e3d4c0;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(54,45,35,0.16);
+      border: 1px solid rgba(54,45,35,0.16);
+    }
+
+    .service-card {
+      background: #e3d4c0;
+      padding: 40px 30px;
+      min-height: 190px;
+    }
+
+    .service-card h3 {
+      font-size: 17px;
+      font-weight: normal;
+      margin-bottom: 14px;
+    }
+
+    .service-card p {
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    /* ------------------------------
+       楽しみ方
+    ------------------------------ */
+
+    .enjoy {
+      background: #f2e9dc;
+    }
+
+    .enjoy-item {
+      display: grid;
+      grid-template-columns: 85px 1fr;
+      gap: 30px;
+      padding: 45px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
+    }
+
+    .enjoy-number {
+      font-size: 42px;
+      font-style: italic;
+      opacity: 0.45;
+    }
+
+    .enjoy-item h3 {
+      font-size: 21px;
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    .enjoy-item p {
+      font-size: 13px;
+    }
+
+    /* ------------------------------
+       店内紹介
+    ------------------------------ */
+
+    .seats {
+      background: #ded0bd;
+    }
+
+    .seat-summary {
+      text-align: center;
+      margin-bottom: 65px;
+      font-size: 14px;
+    }
+
+    .seat-card {
+      margin-bottom: 75px;
+    }
+
+    .seat-photo {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background:
+        linear-gradient(135deg, #5e5348, #2f2923);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgba(255,255,255,0.55);
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      margin-bottom: 22px;
+    }
+
+    .seat-card h3 {
+      font-size: 18px;
+      font-weight: normal;
+      letter-spacing: 0.15em;
+    }
+
+    .seat-card p {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    /* ------------------------------
+       店舗情報
+    ------------------------------ */
+
+    .shop-info {
+      background: #161616;
+      color: #f5f5f2;
+    }
+
+    .shop-info .section-en {
+      color: white;
+    }
+
+    .info-list {
+      border-top: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      gap: 25px;
+    }
+
+    .info-label {
+      font-size: 12px;
+      opacity: 0.55;
+    }
+
+    .info-value {
+      font-size: 13px;
+    }
+
+    /* ------------------------------
+       Instagram
+    ------------------------------ */
+
+    .instagram {
+      background: #f2e9dc;
+      text-align: center;
+    }
+
+    .instagram-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin: 45px 0;
+    }
+
+    .instagram-photo {
+      aspect-ratio: 1 / 1;
+      background: #7c6d5e;
+    }
+
+    .instagram-button {
+      display: inline-block;
+      border: 1px solid #292622;
+      padding: 15px 35px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+    }
+
+    footer {
+      padding: 50px 20px;
+      text-align: center;
+      background: #111;
+      color: rgba(255,255,255,0.65);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+    }
+
+    /* ------------------------------
+       スマホ
+    ------------------------------ */
+
+    @media (max-width: 650px) {
+
+      section {
+        padding: 90px 22px;
+      }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .enjoy-item {
+        grid-template-columns: 55px 1fr;
+        gap: 18px;
+      }
+
+      .enjoy-number {
+        font-size: 32px;
+      }
+
+      .info-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .instagram-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .menu-button {
+        top: 18px;
+        right: 18px;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <!-- ハンバーガーメニュー -->
+  <button class="menu-button" id="menuButton" aria-label="メニューを開く">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div class="menu-panel" id="menuPanel">
+    <nav>
+      <a href="#guide">ご案内</a>
+      <a href="#services">サービス</a>
+      <a href="#enjoy">ヒノカミの楽しみ方</a>
+      <a href="#seats">店内のご紹介</a>
+      <a href="#shop">店舗情報</a>
+      <a href="#instagram">Instagram</a>
+    </nav>
+  </div>
+
+
+  <!-- TOP -->
+  <header class="hero">
+
+    <div class="hero-content">
+      <p class="hero-small">ご案内</p>
+
+      <h1 class="hero-title">
+        炭火焼 ヒノカミ
+      </h1>
+
+      <p class="hero-subtitle">
+        SUMIBIYAKI HINOKAMI
+      </p>
+    </div>
+
+    <div class="scroll-guide">
+      SCROLL
+    </div>
+
+  </header>
+
+
+  <!-- ご案内 -->
+  <section id="guide">
+
+    <div class="inner">
+
+      <h2 class="section-title">ご案内</h2>
+      <span class="section-en">INFORMATION</span>
+
+      <div class="guide-item">
+        <h3>お席時間について</h3>
+
+        <p>
+          当店のお席時間は2時間制とさせていただいております。<br>
+          ラストオーダーは、お席終了時刻の30分前でございます。
+        </p>
+      </div>
+
+
+      <div class="guide-item">
+        <h3>土鍋飯・原始焼きをご注文のお客様へ</h3>
+
+        <p>
+          土鍋飯は炊き上がりまで40〜60分程度、<br>
+          原始焼きは食材により40分程度お時間を頂戴いたします。<br><br>
+
+          お時間に余裕をもって、お早めのご注文をお願いいたします。
+        </p>
+
+        <p class="note">
+          ※ご注文いただくお時間によっては、承ることができない場合がございます。
+        </p>
+      </div>
+
+
+      <div class="guide-item">
+        <h3>お通しについて</h3>
+
+        <p>
+          お一人様550円のお通し代を頂戴しております。
+        </p>
+      </div>
+
+
+      <div class="guide-item">
+        <h3>お煙草について</h3>
+
+        <p>
+          当店は全面禁煙でございます。
+        </p>
+      </div>
+
+
+      <div class="guide-item">
+        <h3>お手洗いについて</h3>
+
+        <p>
+          店内の北側・南側の2か所にございます。
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SERVICE -->
+  <section class="services" id="services">
+
+    <div class="inner">
+
+      <h2 class="section-title">SERVICE</h2>
+      <span class="section-en">より快適にお過ごしいただくために</span>
+
+
+      <div class="service-grid">
+
+        <div class="service-card">
+          <h3>タクシーのご手配</h3>
+          <p>
+            タクシーをお呼びすることができます。<br>
+            お気軽にスタッフまでお声がけください。
+          </p>
+        </div>
+
+
+        <div class="service-card">
+          <h3>メニューにないお料理</h3>
+          <p>
+            食材や仕入れ状況により、
+            メニューにないお料理もご用意できる場合がございます。
+            お気軽にご相談ください。
+          </p>
+        </div>
+
+
+        <div class="service-card">
+          <h3>お冷・爪楊枝</h3>
+          <p>
+            無料でご用意しております。<br>
+            お気軽にスタッフまでお申し付けください。
+          </p>
+        </div>
+
+
+        <div class="service-card">
+          <h3>お写真の撮影</h3>
+          <p>
+            お客様のお写真をお撮りいたします。<br>
+            お気軽にスタッフまでお声がけください。
+          </p>
+        </div>
+
+
+        <div class="service-card">
+          <h3>貸切・団体様</h3>
+          <p>
+            貸切や団体様でのご予約も承っております。
+            詳細はスタッフまでご相談ください。
+          </p>
+        </div>
+
+
+        <div class="service-card">
+          <h3>領収書・インボイス</h3>
+          <p>
+            領収書の分割も承っております。<br>
+            各書類にはインボイス登録番号を記載しております。
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 楽しみ方 -->
+  <section class="enjoy" id="enjoy">
+
+    <div class="inner">
+
+      <h2 class="section-title">ヒノカミの楽しみ方</h2>
+      <span class="section-en">HOW TO ENJOY HINOKAMI</span>
+
+
+      <div class="enjoy-item">
+        <div class="enjoy-number">一</div>
+
+        <div>
+          <h3>まずは種類豊富な日本酒を。</h3>
+          <p>
+            料理に寄り添う一杯とともに、
+            ヒノカミでの時間をお楽しみください。
+          </p>
+        </div>
+      </div>
+
+
+      <div class="enjoy-item">
+        <div class="enjoy-number">二</div>
+
+        <div>
+          <h3>原始焼きと土鍋飯を。</h3>
+          <p>
+            お時間を頂戴するお料理のため、
+            ぜひお早めにご注文ください。
+          </p>
+        </div>
+      </div>
+
+
+      <div class="enjoy-item">
+        <div class="enjoy-number">三</div>
+
+        <div>
+          <h3>お刺身や一品料理を。</h3>
+          <p>
+            旬の食材を使用した一品料理を、
+            日本酒とともにお楽しみください。
+          </p>
+        </div>
+      </div>
+
+
+      <div class="enjoy-item">
+        <div class="enjoy-number">四</div>
+
+        <div>
+          <h3>〆の赤だし、甘味まで。</h3>
+          <p>
+            お食事の最後まで、
+            ヒノカミの時間をゆっくりとお楽しみください。
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 店内紹介 -->
+  <section class="seats" id="seats">
+
+    <div class="inner">
+
+      <h2 class="section-title">店内のご紹介</h2>
+      <span class="section-en">SEATING</span>
+
+      <p class="seat-summary">
+        総席数 58席 ／ 全面禁煙
+      </p>
+
+
+      <div class="seat-card">
+
+        <div class="seat-photo">
+          COUNTER PHOTO
+        </div>
+
+        <h3>COUNTER</h3>
+        <p>カウンター 16席</p>
+
+      </div>
+
+
+      <div class="seat-card">
+
+        <div class="seat-photo">
+          TABLE PHOTO
+        </div>
+
+        <h3>TABLE</h3>
+        <p>テーブル 30席</p>
+
+      </div>
+
+
+      <div class="seat-card">
+
+        <div class="seat-photo">
+          PRIVATE ROOM PHOTO
+        </div>
+
+        <h3>PRIVATE ROOM</h3>
+        <p>個室 8席</p>
+
+      </div>
+
+
+      <div class="seat-card">
+
+        <div class="seat-photo">
+          PRIVATE ROOM PHOTO
+        </div>
+
+        <h3>PRIVATE ROOM</h3>
+        <p>個室 4席</p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 店舗情報 -->
+  <section class="shop-info" id="shop">
+
+    <div class="inner">
+
+      <h2 class="section-title">炭火焼 ヒノカミ</h2>
+      <span class="section-en">SHOP INFORMATION</span>
+
+
+      <div class="info-list">
+
+        <div class="info-row">
+          <div class="info-label">住所</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">電話番号</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">営業時間</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">定休日</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">メールアドレス</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">アクセス</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">駐車場</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">利用可能カード</div>
+          <div class="info-value">後ほど入力</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">電子マネー</div>
+          <div class="info-value">ご利用いただけません</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Instagram -->
+  <section class="instagram" id="instagram">
+
+    <div class="inner">
+
+      <h2 class="section-title">Instagram</h2>
+      <span class="section-en">日々のヒノカミを。</span>
+
+
+      <div class="instagram-grid">
+
+        <div class="instagram-photo"></div>
+        <div class="instagram-photo"></div>
+        <div class="instagram-photo"></div>
+
+        <div class="instagram-photo"></div>
+        <div class="instagram-photo"></div>
+        <div class="instagram-photo"></div>
+
+      </div>
+
+
+      <a href="#" class="instagram-button">
+        Instagramを見る
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <footer>
+    © SUMIBIYAKI HINOKAMI
+  </footer>
+
+
+  <script>
+
+    const menuButton = document.getElementById("menuButton");
+    const menuPanel = document.getElementById("menuPanel");
+    const menuOverlay = document.getElementById("menuOverlay");
+    const menuLinks = document.querySelectorAll(".menu-panel a");
+
+
+    function openMenu() {
+
+      menuPanel.classList.add("open");
+      menuOverlay.classList.add("show");
+
+    }
+
+
+    function closeMenu() {
+
+      menuPanel.classList.remove("open");
+      menuOverlay.classList.remove("show");
+
+    }
+
+
+    menuButton.addEventListener("click", () => {
+
+      if (menuPanel.classList.contains("open")) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+
+    });
+
+
+    menuOverlay.addEventListener("click", closeMenu);
+
+
+    menuLinks.forEach(link => {
+
+      link.addEventListener("click", closeMenu);
+
+    });
+
+  </script>
+
+</body>
+</html>
