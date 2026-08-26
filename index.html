@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,9 +17,13 @@ html
     }
 
     body {
-      font-family: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+      font-family:
+        "Yu Mincho",
+        "Hiragino Mincho ProN",
+        "Hiragino Mincho Pro",
+        serif;
       background: #eee3d3;
-      color: #2b2926;
+      color: #29251f;
       line-height: 2;
       letter-spacing: 0.06em;
     }
@@ -30,25 +33,105 @@ html
       text-decoration: none;
     }
 
-    /* ------------------------------
-       ハンバーガーメニュー
-    ------------------------------ */
+    /* =========================
+       TOP
+    ========================= */
 
-    .menu-button {
-      position: fixed;
+    .hero {
+      width: 100%;
+      height: 100svh;
+      min-height: 620px;
+      position: relative;
+      overflow: hidden;
+      background: #111;
+      color: white;
+    }
+
+    .slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 2s ease;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.03);
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .slide-1 {
+      background-image: url("slide-04.png.webp");
+      background-position: center center;
+    }
+
+    .slide-2 {
+      background-image: url("slide-03.webp.webp");
+      background-position: center center;
+    }
+
+    .slide-3 {
+      background-image: url("slide-01.jpg.jpg");
+      background-position: center center;
+    }
+
+    .slide-4 {
+      background-image: url("slide-02.jpg.jpg");
+      background-position: center center;
+    }
+
+    /* 写真を少し落ち着かせる */
+    .hero-shade {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(0,0,0,0.38) 0%,
+          rgba(0,0,0,0.10) 40%,
+          rgba(0,0,0,0.28) 100%
+        );
+    }
+
+    /* 右上 */
+    .top-right {
+      position: absolute;
       top: 24px;
       right: 24px;
-      z-index: 1001;
-      width: 52px;
-      height: 52px;
-      border: 1px solid rgba(255,255,255,0.55);
-      background: rgba(20,20,20,0.2);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .top-logo {
+      height: 90px;
+      width: auto;
+      display: block;
+      background: rgba(255,255,255,0.92);
+      padding: 7px 10px;
+    }
+
+    /* ハンバーガー */
+    .menu-button {
+      width: 56px;
+      height: 56px;
+      border: 1px solid rgba(255,255,255,0.65);
+      background: rgba(20,20,20,0.18);
       backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       gap: 7px;
     }
 
@@ -59,19 +142,110 @@ html
       transition: 0.3s;
     }
 
+    /* TOP中央 */
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 6vw, 56px);
+      font-weight: normal;
+      letter-spacing: 0.25em;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.45);
+    }
+
+    .hero-title::after {
+      content: "";
+      width: 46px;
+      height: 1px;
+      background: rgba(255,255,255,0.8);
+      display: block;
+      margin: 22px auto 0;
+    }
+
+    /* SCROLL */
+    .scroll-guide {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      z-index: 4;
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-align: center;
+    }
+
+    .scroll-guide::after {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 45px;
+      margin: 12px auto 0;
+      background: rgba(255,255,255,0.75);
+    }
+
+    /* スライド下部ドット */
+    .slide-dots {
+      position: absolute;
+      z-index: 5;
+      bottom: 35px;
+      right: 26px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1px solid white;
+      opacity: 0.6;
+    }
+
+    .dot.active {
+      background: white;
+      opacity: 1;
+    }
+
+    /* =========================
+       ハンバーガーメニュー
+    ========================= */
+
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(0,0,0,0.28);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.35s;
+    }
+
+    .menu-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
     .menu-panel {
       position: fixed;
       top: 0;
-      right: -100%;
-      width: min(82vw, 390px);
+      right: -440px;
+      width: min(82vw, 400px);
       height: 100vh;
-      z-index: 1000;
-
-      background: rgba(255,255,255,0.93);
+      z-index: 100;
+      background: rgba(255,255,255,0.94);
       backdrop-filter: blur(12px);
-
-      padding: 120px 48px 40px;
+      -webkit-backdrop-filter: blur(12px);
+      padding: 115px 45px 40px;
       transition: right 0.45s ease;
+      color: #171717;
     }
 
     .menu-panel.open {
@@ -81,115 +255,25 @@ html
     .menu-panel nav {
       display: flex;
       flex-direction: column;
-      gap: 25px;
     }
 
     .menu-panel a {
-      color: #171717;
-      font-size: 17px;
-      border-bottom: 1px solid rgba(0,0,0,0.15);
-      padding-bottom: 13px;
+      padding: 18px 3px;
+      border-bottom: 1px solid rgba(0,0,0,0.14);
+      font-size: 15px;
+      letter-spacing: 0.12em;
     }
 
-    .menu-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.25);
-      opacity: 0;
-      visibility: hidden;
-      transition: 0.3s;
-      z-index: 999;
+    .menu-panel a:first-child {
+      border-top: 1px solid rgba(0,0,0,0.14);
     }
 
-    .menu-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* ------------------------------
-       TOP
-    ------------------------------ */
-
-    .hero {
-      min-height: 100vh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-      color: white;
-      background: #25211c;
-    }
-
-    /*
-      後から写真を入れる場所。
-      今は仮のグラデーション背景。
-    */
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-
-      background:
-        linear-gradient(rgba(15,12,8,0.35), rgba(15,12,8,0.55)),
-        radial-gradient(circle at 50% 30%, #6e5b45, #17130f 75%);
-
-      transform: scale(1.05);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 30px;
-    }
-
-    .hero-small {
-      font-size: 17px;
-      margin-bottom: 16px;
-      letter-spacing: 0.3em;
-    }
-
-    .hero-title {
-      font-size: clamp(34px, 8vw, 72px);
-      font-weight: normal;
-      letter-spacing: 0.13em;
-    }
-
-    .hero-subtitle {
-      margin-top: 12px;
-      font-size: 12px;
-      letter-spacing: 0.4em;
-      opacity: 0.85;
-    }
-
-    .scroll-guide {
-      position: absolute;
-      z-index: 2;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      opacity: 0.85;
-    }
-
-    .scroll-guide::after {
-      content: "";
-      display: block;
-      width: 1px;
-      height: 50px;
-      background: white;
-      margin: 13px auto 0;
-      opacity: 0.6;
-    }
-
-    /* ------------------------------
-       共通セクション
-    ------------------------------ */
+    /* =========================
+       共通
+    ========================= */
 
     section {
-      padding: 110px 22px;
+      padding: 110px 24px;
     }
 
     .inner {
@@ -199,149 +283,161 @@ html
 
     .section-title {
       text-align: center;
-      font-size: clamp(27px, 5vw, 42px);
+      font-size: clamp(27px, 5vw, 41px);
       font-weight: normal;
-      letter-spacing: 0.16em;
-      margin-bottom: 14px;
+      letter-spacing: 0.18em;
+      margin-bottom: 10px;
     }
 
     .section-en {
-      display: block;
       text-align: center;
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      margin-bottom: 70px;
+      display: block;
+      font-size: 9px;
+      letter-spacing: 0.38em;
       opacity: 0.55;
+      margin-bottom: 65px;
+    }
+
+    /* =========================
+       ご案内
+    ========================= */
+
+    #guide {
+      background: #eee3d3;
     }
 
     .guide-item {
       padding: 38px 0;
-      border-bottom: 1px solid rgba(38,34,28,0.18);
+      border-bottom: 1px solid rgba(40,35,30,0.16);
     }
 
     .guide-item:first-of-type {
-      border-top: 1px solid rgba(38,34,28,0.18);
+      border-top: 1px solid rgba(40,35,30,0.16);
     }
 
     .guide-item h3 {
       font-size: 19px;
       font-weight: normal;
-      margin-bottom: 17px;
+      margin-bottom: 14px;
       letter-spacing: 0.12em;
     }
 
     .guide-item p {
       font-size: 14px;
-      line-height: 2.2;
     }
 
     .note {
       margin-top: 12px;
-      font-size: 12px !important;
+      font-size: 11px !important;
       opacity: 0.7;
     }
 
-    /* ------------------------------
+    /* =========================
        SERVICE
-    ------------------------------ */
+    ========================= */
 
-    .services {
-      background: #e3d4c0;
+    #services {
+      background: #e2d2bd;
     }
 
     .service-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background: rgba(54,45,35,0.16);
-      border: 1px solid rgba(54,45,35,0.16);
+      border-top: 1px solid rgba(40,35,30,0.16);
+      border-left: 1px solid rgba(40,35,30,0.16);
     }
 
     .service-card {
-      background: #e3d4c0;
-      padding: 40px 30px;
-      min-height: 190px;
+      padding: 38px 30px;
+      border-right: 1px solid rgba(40,35,30,0.16);
+      border-bottom: 1px solid rgba(40,35,30,0.16);
+      min-height: 175px;
     }
 
     .service-card h3 {
-      font-size: 17px;
       font-weight: normal;
-      margin-bottom: 14px;
+      font-size: 17px;
+      margin-bottom: 12px;
     }
 
     .service-card p {
       font-size: 13px;
-      line-height: 2;
     }
 
-    /* ------------------------------
+    /* =========================
        楽しみ方
-    ------------------------------ */
+    ========================= */
 
-    .enjoy {
+    #enjoy {
       background: #f2e9dc;
     }
 
     .enjoy-item {
       display: grid;
-      grid-template-columns: 85px 1fr;
+      grid-template-columns: 70px 1fr;
       gap: 30px;
-      padding: 45px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.15);
+      padding: 42px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.14);
     }
 
     .enjoy-number {
-      font-size: 42px;
-      font-style: italic;
+      font-size: 36px;
       opacity: 0.45;
     }
 
     .enjoy-item h3 {
-      font-size: 21px;
+      font-size: 20px;
       font-weight: normal;
-      margin-bottom: 10px;
+      margin-bottom: 7px;
     }
 
     .enjoy-item p {
       font-size: 13px;
     }
 
-    /* ------------------------------
+    /* =========================
        店内紹介
-    ------------------------------ */
+    ========================= */
 
-    .seats {
-      background: #ded0bd;
+    #seats {
+      background: #dfd0bc;
     }
 
     .seat-summary {
       text-align: center;
-      margin-bottom: 65px;
-      font-size: 14px;
+      font-size: 13px;
+      margin-bottom: 60px;
     }
 
     .seat-card {
-      margin-bottom: 75px;
+      margin-bottom: 70px;
     }
 
     .seat-photo {
       width: 100%;
       aspect-ratio: 16 / 10;
-      background:
-        linear-gradient(135deg, #5e5348, #2f2923);
+      object-fit: cover;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .seat-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #4d443b;
       display: flex;
-      justify-content: center;
       align-items: center;
-      color: rgba(255,255,255,0.55);
-      font-size: 13px;
+      justify-content: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
       letter-spacing: 0.2em;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .seat-card h3 {
       font-size: 18px;
       font-weight: normal;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.14em;
     }
 
     .seat-card p {
@@ -349,33 +445,29 @@ html
       opacity: 0.7;
     }
 
-    /* ------------------------------
+    /* =========================
        店舗情報
-    ------------------------------ */
+    ========================= */
 
-    .shop-info {
-      background: #161616;
-      color: #f5f5f2;
-    }
-
-    .shop-info .section-en {
-      color: white;
+    #shop {
+      background: #151515;
+      color: #f6f3ed;
     }
 
     .info-list {
-      border-top: 1px solid rgba(255,255,255,0.25);
+      border-top: 1px solid rgba(255,255,255,0.2);
     }
 
     .info-row {
       display: grid;
       grid-template-columns: 150px 1fr;
-      padding: 24px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.18);
-      gap: 25px;
+      gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.16);
     }
 
     .info-label {
-      font-size: 12px;
+      font-size: 11px;
       opacity: 0.55;
     }
 
@@ -383,11 +475,11 @@ html
       font-size: 13px;
     }
 
-    /* ------------------------------
+    /* =========================
        Instagram
-    ------------------------------ */
+    ========================= */
 
-    .instagram {
+    #instagram {
       background: #f2e9dc;
       text-align: center;
     }
@@ -396,39 +488,65 @@ html
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 7px;
-      margin: 45px 0;
+      margin: 40px 0;
     }
 
     .instagram-photo {
-      aspect-ratio: 1 / 1;
-      background: #7c6d5e;
+      aspect-ratio: 1;
+      background: #77695a;
     }
 
     .instagram-button {
       display: inline-block;
-      border: 1px solid #292622;
-      padding: 15px 35px;
-      font-size: 12px;
+      border: 1px solid #29251f;
+      padding: 14px 34px;
+      font-size: 11px;
       letter-spacing: 0.14em;
     }
 
     footer {
-      padding: 50px 20px;
+      background: #101010;
+      color: rgba(255,255,255,0.55);
       text-align: center;
-      background: #111;
-      color: rgba(255,255,255,0.65);
-      font-size: 10px;
-      letter-spacing: 0.18em;
+      padding: 45px 20px;
+      font-size: 9px;
+      letter-spacing: 0.2em;
     }
 
-    /* ------------------------------
+    /* =========================
        スマホ
-    ------------------------------ */
+    ========================= */
 
     @media (max-width: 650px) {
 
+      .hero {
+        min-height: 100svh;
+      }
+
+      .top-right {
+        top: 16px;
+        right: 16px;
+        gap: 10px;
+      }
+
+      .top-logo {
+        height: 75px;
+      }
+
+      .menu-button {
+        width: 50px;
+        height: 50px;
+      }
+
+      .slide-1,
+      .slide-2,
+      .slide-3,
+      .slide-4 {
+        background-position: center center;
+      }
+
       section {
-        padding: 90px 22px;
+        padding: 85px 22px;
       }
 
       .service-grid {
@@ -436,41 +554,34 @@ html
       }
 
       .enjoy-item {
-        grid-template-columns: 55px 1fr;
-        gap: 18px;
+        grid-template-columns: 48px 1fr;
+        gap: 17px;
       }
 
       .enjoy-number {
-        font-size: 32px;
+        font-size: 30px;
       }
 
       .info-row {
         grid-template-columns: 1fr;
-        gap: 7px;
+        gap: 5px;
       }
 
-      .instagram-grid {
-        grid-template-columns: repeat(3, 1fr);
+      .hero-title {
+        font-size: 29px;
       }
 
-      .menu-button {
-        top: 18px;
+      .slide-dots {
         right: 18px;
+        bottom: 25px;
       }
     }
   </style>
 </head>
 
-
 <body>
 
-  <!-- ハンバーガーメニュー -->
-  <button class="menu-button" id="menuButton" aria-label="メニューを開く">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
+  <!-- ハンバーガーメニュー本体 -->
   <div class="menu-overlay" id="menuOverlay"></div>
 
   <div class="menu-panel" id="menuPanel">
@@ -484,24 +595,51 @@ html
     </nav>
   </div>
 
-
   <!-- TOP -->
   <header class="hero">
 
+    <div class="slides">
+      <div class="slide slide-1 active"></div>
+      <div class="slide slide-2"></div>
+      <div class="slide slide-3"></div>
+      <div class="slide slide-4"></div>
+    </div>
+
+    <div class="hero-shade"></div>
+
+    <div class="top-right">
+
+      <img
+        src="logo.jpg.jpg"
+        alt="炭火焼 ヒノカミ"
+        class="top-logo"
+      >
+
+      <button
+        class="menu-button"
+        id="menuButton"
+        aria-label="メニューを開く"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+
     <div class="hero-content">
-      <p class="hero-small">ご案内</p>
-
-      <h1 class="hero-title">
-        炭火焼 ヒノカミ
-      </h1>
-
-      <p class="hero-subtitle">
-        SUMIBIYAKI HINOKAMI
-      </p>
+      <h1 class="hero-title">ご案内</h1>
     </div>
 
     <div class="scroll-guide">
       SCROLL
+    </div>
+
+    <div class="slide-dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
 
   </header>
@@ -509,7 +647,6 @@ html
 
   <!-- ご案内 -->
   <section id="guide">
-
     <div class="inner">
 
       <h2 class="section-title">ご案内</h2>
@@ -517,69 +654,55 @@ html
 
       <div class="guide-item">
         <h3>お席時間について</h3>
-
         <p>
           当店のお席時間は2時間制とさせていただいております。<br>
           ラストオーダーは、お席終了時刻の30分前でございます。
         </p>
       </div>
 
-
       <div class="guide-item">
         <h3>土鍋飯・原始焼きをご注文のお客様へ</h3>
-
         <p>
           土鍋飯は炊き上がりまで40〜60分程度、<br>
           原始焼きは食材により40分程度お時間を頂戴いたします。<br><br>
-
           お時間に余裕をもって、お早めのご注文をお願いいたします。
         </p>
-
         <p class="note">
           ※ご注文いただくお時間によっては、承ることができない場合がございます。
         </p>
       </div>
 
-
       <div class="guide-item">
         <h3>お通しについて</h3>
-
         <p>
           お一人様550円のお通し代を頂戴しております。
         </p>
       </div>
 
-
       <div class="guide-item">
         <h3>お煙草について</h3>
-
         <p>
           当店は全面禁煙でございます。
         </p>
       </div>
 
-
       <div class="guide-item">
         <h3>お手洗いについて</h3>
-
         <p>
           店内の北側・南側の2か所にございます。
         </p>
       </div>
 
     </div>
-
   </section>
 
 
   <!-- SERVICE -->
-  <section class="services" id="services">
-
+  <section id="services">
     <div class="inner">
 
       <h2 class="section-title">SERVICE</h2>
       <span class="section-en">より快適にお過ごしいただくために</span>
-
 
       <div class="service-grid">
 
@@ -591,7 +714,6 @@ html
           </p>
         </div>
 
-
         <div class="service-card">
           <h3>メニューにないお料理</h3>
           <p>
@@ -601,24 +723,21 @@ html
           </p>
         </div>
 
-
         <div class="service-card">
           <h3>お冷・爪楊枝</h3>
           <p>
-            無料でご用意しております。<br>
+            無料でご用意しております。
             お気軽にスタッフまでお申し付けください。
           </p>
         </div>
 
-
         <div class="service-card">
           <h3>お写真の撮影</h3>
           <p>
-            お客様のお写真をお撮りいたします。<br>
+            お客様のお写真をお撮りいたします。
             お気軽にスタッフまでお声がけください。
           </p>
         </div>
-
 
         <div class="service-card">
           <h3>貸切・団体様</h3>
@@ -627,7 +746,6 @@ html
             詳細はスタッフまでご相談ください。
           </p>
         </div>
-
 
         <div class="service-card">
           <h3>領収書・インボイス</h3>
@@ -640,78 +758,54 @@ html
       </div>
 
     </div>
-
   </section>
 
 
   <!-- 楽しみ方 -->
-  <section class="enjoy" id="enjoy">
-
+  <section id="enjoy">
     <div class="inner">
 
       <h2 class="section-title">ヒノカミの楽しみ方</h2>
       <span class="section-en">HOW TO ENJOY HINOKAMI</span>
 
-
       <div class="enjoy-item">
         <div class="enjoy-number">一</div>
-
         <div>
           <h3>まずは種類豊富な日本酒を。</h3>
-          <p>
-            料理に寄り添う一杯とともに、
-            ヒノカミでの時間をお楽しみください。
-          </p>
+          <p>料理に寄り添う一杯とともに、お楽しみください。</p>
         </div>
       </div>
-
 
       <div class="enjoy-item">
         <div class="enjoy-number">二</div>
-
         <div>
           <h3>原始焼きと土鍋飯を。</h3>
-          <p>
-            お時間を頂戴するお料理のため、
-            ぜひお早めにご注文ください。
-          </p>
+          <p>お時間を頂戴するため、ぜひお早めにご注文ください。</p>
         </div>
       </div>
-
 
       <div class="enjoy-item">
         <div class="enjoy-number">三</div>
-
         <div>
           <h3>お刺身や一品料理を。</h3>
-          <p>
-            旬の食材を使用した一品料理を、
-            日本酒とともにお楽しみください。
-          </p>
+          <p>旬の食材とともに、日本酒をお楽しみください。</p>
         </div>
       </div>
 
-
       <div class="enjoy-item">
         <div class="enjoy-number">四</div>
-
         <div>
           <h3>〆の赤だし、甘味まで。</h3>
-          <p>
-            お食事の最後まで、
-            ヒノカミの時間をゆっくりとお楽しみください。
-          </p>
+          <p>最後までヒノカミでの時間をゆっくりとお楽しみください。</p>
         </div>
       </div>
 
     </div>
-
   </section>
 
 
-  <!-- 店内紹介 -->
-  <section class="seats" id="seats">
-
+  <!-- 店内 -->
+  <section id="seats">
     <div class="inner">
 
       <h2 class="section-title">店内のご紹介</h2>
@@ -721,67 +815,44 @@ html
         総席数 58席 ／ 全面禁煙
       </p>
 
-
       <div class="seat-card">
-
-        <div class="seat-photo">
-          COUNTER PHOTO
-        </div>
-
+        <img
+          src="slide-02.jpg.jpg"
+          alt="カウンター席"
+          class="seat-photo"
+        >
         <h3>COUNTER</h3>
         <p>カウンター 16席</p>
-
       </div>
 
-
       <div class="seat-card">
-
-        <div class="seat-photo">
-          TABLE PHOTO
-        </div>
-
+        <div class="seat-placeholder">TABLE PHOTO</div>
         <h3>TABLE</h3>
         <p>テーブル 30席</p>
-
       </div>
 
-
       <div class="seat-card">
-
-        <div class="seat-photo">
-          PRIVATE ROOM PHOTO
-        </div>
-
+        <div class="seat-placeholder">PRIVATE ROOM PHOTO</div>
         <h3>PRIVATE ROOM</h3>
         <p>個室 8席</p>
-
       </div>
 
-
       <div class="seat-card">
-
-        <div class="seat-photo">
-          PRIVATE ROOM PHOTO
-        </div>
-
+        <div class="seat-placeholder">PRIVATE ROOM PHOTO</div>
         <h3>PRIVATE ROOM</h3>
         <p>個室 4席</p>
-
       </div>
 
     </div>
-
   </section>
 
 
   <!-- 店舗情報 -->
-  <section class="shop-info" id="shop">
-
+  <section id="shop">
     <div class="inner">
 
       <h2 class="section-title">炭火焼 ヒノカミ</h2>
       <span class="section-en">SHOP INFORMATION</span>
-
 
       <div class="info-list">
 
@@ -833,38 +904,30 @@ html
       </div>
 
     </div>
-
   </section>
 
 
   <!-- Instagram -->
-  <section class="instagram" id="instagram">
-
+  <section id="instagram">
     <div class="inner">
 
       <h2 class="section-title">Instagram</h2>
       <span class="section-en">日々のヒノカミを。</span>
 
-
       <div class="instagram-grid">
-
         <div class="instagram-photo"></div>
         <div class="instagram-photo"></div>
         <div class="instagram-photo"></div>
-
         <div class="instagram-photo"></div>
         <div class="instagram-photo"></div>
         <div class="instagram-photo"></div>
-
       </div>
-
 
       <a href="#" class="instagram-button">
         Instagramを見る
       </a>
 
     </div>
-
   </section>
 
 
@@ -875,27 +938,51 @@ html
 
   <script>
 
+    /* =========================
+       スライドショー
+    ========================= */
+
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+
+    let currentSlide = 0;
+
+    function changeSlide() {
+
+      slides[currentSlide].classList.remove("active");
+      dots[currentSlide].classList.remove("active");
+
+      currentSlide++;
+
+      if (currentSlide >= slides.length) {
+        currentSlide = 0;
+      }
+
+      slides[currentSlide].classList.add("active");
+      dots[currentSlide].classList.add("active");
+    }
+
+    setInterval(changeSlide, 5500);
+
+
+    /* =========================
+       ハンバーガーメニュー
+    ========================= */
+
     const menuButton = document.getElementById("menuButton");
     const menuPanel = document.getElementById("menuPanel");
     const menuOverlay = document.getElementById("menuOverlay");
     const menuLinks = document.querySelectorAll(".menu-panel a");
 
-
     function openMenu() {
-
       menuPanel.classList.add("open");
       menuOverlay.classList.add("show");
-
     }
-
 
     function closeMenu() {
-
       menuPanel.classList.remove("open");
       menuOverlay.classList.remove("show");
-
     }
-
 
     menuButton.addEventListener("click", () => {
 
@@ -907,14 +994,10 @@ html
 
     });
 
-
     menuOverlay.addEventListener("click", closeMenu);
 
-
     menuLinks.forEach(link => {
-
       link.addEventListener("click", closeMenu);
-
     });
 
   </script>
